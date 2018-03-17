@@ -1,7 +1,6 @@
 package com.toyide.csci3130_project;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -11,10 +10,13 @@ import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.EditText;
-import android.content.Intent;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+
+//import static java.security.AccessController.getContext;
 
 /**
  * Created by JingyunYang on 2018/2/21.
@@ -39,21 +41,22 @@ public class RegisterCourseInfo  {
     }
 
     public void init() {
-        // Create the column name: CourseName, CourseID, Time and Location respectively
+
+        // Create the column name: CourseName, courseInfo, Time and Location respectively
         Log.i("view", view.toString());
         Log.i("class", context.getClass().toString());
         System.out.print(context.getClass());
         TableLayout stk = (TableLayout)view.findViewById(R.id.registerCourseInfo); //(TableLayout) findViewById(R.id.courseTable);
         Log.i("view", stk.toString());
         TableRow tbrow0 = new TableRow(context);
-        TextView courseNameView = new TextView(context);
-        courseNameView.setText(" Course Name ");
-        courseNameView.setTextColor(Color.WHITE);
-        tbrow0.addView(courseNameView);
-        TextView courseIDView = new TextView(context);
-        courseIDView.setText(" Course ID ");
-        courseIDView.setTextColor(Color.WHITE);
-        tbrow0.addView(courseIDView);
+        TextView courseTitle = new TextView(context);
+        courseTitle.setText(" Course Name ");
+        courseTitle.setTextColor(Color.WHITE);
+        tbrow0.addView(courseTitle);
+        TextView courseInfoView = new TextView(context);
+        courseInfoView.setText(" Course ID ");
+        courseInfoView.setTextColor(Color.WHITE);
+        tbrow0.addView(courseInfoView);
         TextView courseTimeView = new TextView(context);
         courseTimeView.setText(" Time ");
         courseTimeView.setTextColor(Color.WHITE);
@@ -63,23 +66,28 @@ public class RegisterCourseInfo  {
         spotView.setTextColor(Color.WHITE);
         tbrow0.addView(spotView);
         stk.addView(tbrow0);
+
+        ArrayList<Course> courseArrayList = new ArrayList<Course>();
+        //TODO:use adapter and reconstruct UI
+        //RegistrationAdapter adapter = new RegistrationAdapter(getContext(),R.layout.fragment_register,courseArrayList);
+
         // TODO: Use a proper data structue to pass the course related information
         // TODO: Add listener to the checkbox
         // TODO: Connect to the database
         // TODO: Adopt a better UI
         for (int i = 0; i < 20; i++) {
             TableRow tbrow = new TableRow(context);
-            TextView courseNameView1 = new TextView(context);
-            TextView courseIDView1 = new TextView(context);
+            TextView courseTitle1 = new TextView(context);
+            TextView courseInfoView1 = new TextView(context);
 
-            courseNameView1.setText("CSCI" + i);
-            courseNameView1.setTextColor(Color.WHITE);
-            courseNameView1.setGravity(Gravity.CENTER);
-            tbrow.addView(courseNameView1);
-            courseIDView1.setText("Course " + i);
-            courseIDView1.setTextColor(Color.WHITE);
-            courseIDView1.setGravity(Gravity.CENTER);
-            tbrow.addView(courseIDView1);
+            courseTitle1.setText("CSCI" + i);
+            courseTitle1.setTextColor(Color.WHITE);
+            courseTitle1.setGravity(Gravity.CENTER);
+            tbrow.addView(courseTitle1);
+            courseInfoView1.setText("Course " + i);
+            courseInfoView1.setTextColor(Color.WHITE);
+            courseInfoView1.setGravity(Gravity.CENTER);
+            tbrow.addView(courseInfoView1);
 
             TextView courseTimeView1 = new TextView(context);
             courseTimeView1.setText("Monday " + (8+i%8 ) + ":00" );

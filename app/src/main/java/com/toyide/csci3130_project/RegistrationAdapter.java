@@ -13,48 +13,34 @@ import java.util.ArrayList;
  * Created by JingyunYang on 2018/3/17.
  */
 
-//public class RegistrationAdapter extends ArrayAdapter<Registration>{
-//
-//    public RegistrationAdapter(Context context, int resource, ArrayList<Course> objects) {
-//        super(context, resource, objects);
-//    }
-//
-//    @Override
-//    public View getView(int position, View covertView, ViewGroup parent ){
-//
-//        Registration registration = getItem(position);
-//        if(covertView ==null){
-//            covertView = LayoutInflater.from(getContext()).inflate((R.layout.fragment_register,parent.false));
-//
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//
-//            //get data for the position
-//            Registration registration = getItem(position);
-//            if (convertView == null) {
-//                convertView = LayoutInflater.from(getContext()).inflate(R.layout.course_cotent, parent,false);
-//            }
-//
-//            TextView tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
-//            TextView tvType = (TextView) convertView.findViewById(R.id.tv_type);
-//            TextView tvWeekday = (TextView) convertView.findViewById(R.id.tv_weekday);
-//            TextView tvTime = (TextView) convertView.findViewById(R.id.tv_time);
-//            TextView tvInfo = (TextView) convertView.findViewById(R.id.tv_info);
-//
-//            //set text for TextView
-//            tvTitle.setText(course.getCourseTitle());
-//            tvType.setText(course.getCourseType());
-//            tvWeekday.setText(course.getCourseWeekday());
-//            tvTime.setText(course.getCourseTime());
-//            tvInfo.setText(course.getCourseInfo());
-//
-//            return convertView;
-//        }
-//    }
-//
-//}
-//
-//
-//}
+public class RegistrationAdapter extends ArrayAdapter<Course> {
+
+    //constructor
+    public RegistrationAdapter(Context context, int resource, ArrayList<Course> objects) {
+        super(context, resource, objects);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        //get data for the position
+        Course course = getItem(position);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.registration_content, parent, false);
+        }
+
+        TextView courseTitleView = (TextView) convertView.findViewById(R.id.courseName);
+        TextView courseInfoView = (TextView) convertView.findViewById(R.id.courseInfo);
+        TextView courseTime = (TextView) convertView.findViewById(R.id.courseTime);
+        TextView courseSpot = (TextView) convertView.findViewById(R.id.courseSpot);
+
+        //set text for TextView
+        courseTitleView.setText(course.getCourseTitle());
+        courseInfoView.setText(course.getCourseInfo());
+        courseTime.setText(course.getCourseWeekday() + course.getCourseTime());
+        courseSpot.setText(course.getSpotCurrent() + "/" + course.getSpotMax());
+
+
+        return convertView;
+    }
+}

@@ -42,6 +42,17 @@ public class Registration implements Serializable {
 
             return result;
         }
+    public String getUid() {
+        return uid;
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public ArrayList<String> getCid() {
+        return cid;
+    }
 
 }
 
