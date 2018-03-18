@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/courseInfo"
     android:layout_width="match_parent"
@@ -7,37 +8,22 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/RegisterButt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:text="Register" />
-
-        <ScrollView
-            android:id="@+id/scrollView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#3d455b">
-
-        </ScrollView>
-    </RelativeLayout>
-
-    <TableLayout
-        android:id="@+id/registerCourseInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></TableLayout>
+    <Button
+        android:id="@+id/RegisterButt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Contact"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
+        <!--TODO:
+        //android:onClick="createContactButton"-->
 
     <ListView
         android:id="@+id/listView_Registration"
         android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        android:layout_constraintTop_toBottomOf="@+id/RegisterButt"
-        android:layout_constraintRight_toRightOf="parent"/>
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

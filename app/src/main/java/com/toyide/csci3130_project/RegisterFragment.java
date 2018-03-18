@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TableLayout;
+//import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -113,12 +113,13 @@ public class RegisterFragment extends Fragment {
 
 
 
-
+/*
 
 
         TableLayout courseInfoView = view.findViewById(R.id.registerCourseInfo);
         RegisterCourseInfo myRegisteration = new RegisterCourseInfo(getActivity(),this,view);
         myRegisteration.init();
+*/
         Button RegButt = (Button) view.findViewById(R.id.RegisterButt);
         RegButt.setOnClickListener(new View.OnClickListener() {
             @Override

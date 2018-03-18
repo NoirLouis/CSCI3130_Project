@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * A class display the course information with a check box to register
  */
 
-
+/*
 public class RegisterCourseInfo  {
     Context context;
     Activity activity;
@@ -68,13 +68,7 @@ public class RegisterCourseInfo  {
         stk.addView(tbrow0);
 
         ArrayList<Course> courseArrayList = new ArrayList<Course>();
-        //TODO:use adapter and reconstruct UI
-        //RegistrationAdapter adapter = new RegistrationAdapter(getContext(),R.layout.fragment_register,courseArrayList);
 
-        // TODO: Use a proper data structue to pass the course related information
-        // TODO: Add listener to the checkbox
-        // TODO: Connect to the database
-        // TODO: Adopt a better UI
         for (int i = 0; i < 20; i++) {
             TableRow tbrow = new TableRow(context);
             TextView courseTitle1 = new TextView(context);
@@ -111,4 +105,11 @@ public class RegisterCourseInfo  {
 
     }
 
-}
+}*/
+//TODO:use adapter and reconstruct UI
+//RegistrationAdapter adapter = new RegistrationAdapter(getContext(),R.layout.fragment_register,courseArrayList);
+
+// TODO: Use a proper data structue to pass the course related information
+// TODO: Add listener to the checkbox
+// TODO: Connect to the database
+// TODO: Adopt a better UI

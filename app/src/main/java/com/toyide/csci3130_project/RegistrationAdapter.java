@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class RegistrationAdapter extends ArrayAdapter<Course> {
         TextView courseInfoView = (TextView) convertView.findViewById(R.id.courseInfo);
         TextView courseTime = (TextView) convertView.findViewById(R.id.courseTime);
         TextView courseSpot = (TextView) convertView.findViewById(R.id.courseSpot);
+        CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
 
         //set text for TextView
         courseTitleView.setText(course.getCourseTitle());
