@@ -33,8 +33,8 @@ public class Course {
 
         this.spotCurrent = spotCurrent;
         this.spotMax = spotMax;
-
     }
+
 
     public String getCourseTitle() {
         return courseTitle;
@@ -84,4 +84,3 @@ public class Course {
 
     public void setSpotMax(int spotMax) {this.spotMax = spotMax;}
 }
-

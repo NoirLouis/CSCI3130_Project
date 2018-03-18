@@ -11,110 +11,111 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
 import java.sql.Array;
 import java.util.ArrayList;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ScheduleFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ScheduleFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.toyide.csci3130_project.login;
+
+
 public class ScheduleFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private MyApplicationData appState;
+    private String[] cidList;
+    private ArrayList<Course> CourseList;
 
     public ScheduleFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ScheduleFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ScheduleFragment newInstance(String param1, String param2) {
-        ScheduleFragment fragment = new ScheduleFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         //course items that should be shown in the schedule
         ArrayList<Course> courseArrayList = new ArrayList<>();
-        Course cb1 = new Course(
-                "CSCI3130",
-                "Lec",
-                "TTh",
-                "14:25 - 15:55",
-                "Software Engineering");
-        Course cb2 = new Course(
-                "CSCI1100",
-                "Lec",
-                "M",
-                "10:25 - 13:35",
-                "Java");
-        Course cb3 = new Course(
-                "CSCI2141",
-                "Lec",
-                "MWF",
-                "8:25 - 9:35",
-                "Database");
-        Course cb4 = new Course(
-                "CSCI2112",
-                "Lec",
-                "MWF",
-                "11:25 - 12:35",
-                "Assembly");
-        Course cb5 = new Course(
-                "CSCI4116",
-                "Lec",
-                "MWF",
-                "14:25 - 15:35",
-                "Cryptography");
 
-        //add items into courseArrayList
-        courseArrayList.add(cb1);
-        courseArrayList.add(cb2);
-        courseArrayList.add(cb3);
-        courseArrayList.add(cb4);
-        courseArrayList.add(cb5);
+
+        //Retrieve schedual information for current user
+        String userId = LocalData.getUserID(); //Get userID from local
+
+        //Set-up Firebase
+        appState = (MyApplicationData) getActivity().getApplicationContext();
+        appState.firebaseDBInstance = FirebaseDatabase.getInstance();
+        appState.firebaseReference = appState.firebaseDBInstance.getReference("Registrations");
+        appState.firebaseReference.orderByChild("userID").equalTo(LocalData.getUserID()).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot != null) {
+                    Registration reg = dataSnapshot.getValue(Registration.class);
+                    cidList = reg.getCourses();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        appState.firebaseReference = appState.firebaseDBInstance.getReference("Courses");
+        for(int i = 0; i < cidList.length-1; i++) {
+            final String courseID = cidList[i];
+
+            appState.firebaseReference.orderByChild("CourseID").equalTo(courseID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String courseTitle="courseTitle", courseType="courseType", courseWeekday="courseWeekday", courseTime="courseTime", courseInfo="courseInfo";
+                    if (dataSnapshot != null) {
+                        Course course = dataSnapshot.getValue(Course.class);
+                        courseTitle = course.getCourseTitle();
+                        courseType = course.getCourseType();
+                        courseWeekday = course.getCourseWeekday();
+                        courseTime = course.getCourseTime();
+                        courseInfo = course.getCourseInfo();
+                    }
+                    Course C = new Course(
+                            courseTitle,
+                            courseType,
+                            courseWeekday,
+                            courseTime,
+                            courseInfo
+                    );
+                    CourseList.add(C);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+;
 
         //create a new CourseListAdapter object(CourseListAdapter.java)
         //turns the content of courseArrayList into things that the ListView(fragment_schedule) can display
-        CourseListAdapter adapter = new CourseListAdapter(getContext(), R.layout.fragment_schedule, courseArrayList);
+        CourseListAdapter adapter = new CourseListAdapter(getContext(), R.layout.fragment_schedule, CourseList);
 
         //look within the ListView(fragment_schedule) layout for the element with id.lv_schedule
         ListView listView = (ListView) view.findViewById(R.id.lv_schedule);

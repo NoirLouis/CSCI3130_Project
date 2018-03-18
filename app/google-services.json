@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "102482807636",
+    "firebase_url": "https://project-cdf11.firebaseio.com",
+    "project_id": "project-cdf11",
+    "storage_bucket": "project-cdf11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102482807636:android:8551b7dea50fd569",
+        "android_client_info": {
+          "package_name": "com.toyide.csci3130_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102482807636-uhvs226dvgofr0ms1ruk6b7n715ql9oc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.toyide.csci3130_project",
+            "certificate_hash": "ca11162deb02086a20deb9b81fa402a2847db541"
+          }
+        },
+        {
+          "client_id": "102482807636-dgfn5kcl2idvsbh40sjvul86nbd5as7q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.toyide.csci3130_project",
+            "certificate_hash": "f04868698b9ffa2484e52cd31dd99e7470a5b40f"
+          }
+        },
+        {
+          "client_id": "102482807636-254hb1li9vtkfibtn2p6jeu1ab62lcfa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.toyide.csci3130_project",
+            "certificate_hash": "45a5bd0d9629104d4755cbd0566f09d36bcea92b"
+          }
+        },
+        {
+          "client_id": "102482807636-qd5b5knkna7b09e5rjcrddevuc3okvhk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB04PEvO_08AzCrl_Cn9UENSm_Cu7jovfQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102482807636-qd5b5knkna7b09e5rjcrddevuc3okvhk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

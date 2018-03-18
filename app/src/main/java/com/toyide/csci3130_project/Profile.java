@@ -14,7 +14,7 @@ import java.util.Map;
  * project Firebase databse. This is converted to a JSON format
  */
 public class Profile implements Serializable {
-    public String uid;
+    public String userID;
     public String username;
     public String password;
     public String department;
@@ -25,7 +25,7 @@ public class Profile implements Serializable {
     }
 
     public  Profile(String uid, String username, String password, String department, String degree){
-        this.uid = uid;
+        this.userID = uid;
         this.username = username;
         this.password = password;
         this.department = department;
@@ -35,12 +35,11 @@ public class Profile implements Serializable {
     @Exclude
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
-
-        result.put("username", username);
-        result.put("password", password);
-        result.put("department", department);
-        result.put("degree", degree);
-
+        result.put("UserID", userID);
+        result.put("UseName", username);
+        result.put("Password", password);
+        result.put("Department", department);
+        result.put("UserDegree", degree);
         return result;
     }
 
