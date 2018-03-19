@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     Profile myprofile;
     private MyApplicationData appState;
 
-    private String userID;
+    private String UserID;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container,false);
 
-        userID = LocalData.getUserID();
+        UserID = LocalData.getUserID();
         myprofile = (Profile) getActivity().getIntent().getSerializableExtra("profile") ;
 
         name = view.findViewById(R.id.viewAntoNieva);
@@ -135,8 +135,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         //Set-up Firebase
         appState = (MyApplicationData) getActivity().getApplicationContext();
         appState.firebaseDBInstance = FirebaseDatabase.getInstance();
-        appState.firebaseReference = appState.firebaseDBInstance.getReference("Courses");
-        appState.firebaseReference.orderByChild("CourseID").addValueEventListener(new ValueEventListener() {
+        appState.firebaseReference = appState.firebaseDBInstance.getReference("Users");
+        appState.firebaseReference.orderByChild("UserID").addValueEventListener(new ValueEventListener() {
             @Override public void onDataChange(DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
             }
