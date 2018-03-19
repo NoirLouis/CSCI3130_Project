@@ -53,6 +53,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     Button pass;
     Button modify;
     Button back;
+    Button out;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -129,6 +130,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         info =view.findViewById(R.id.info);
         pass = view.findViewById(R.id.pass);
         modify = view.findViewById(R.id.confirm);
+        out = view.findViewById(R.id.out);
 
         //Set-up Firebase
         appState = (MyApplicationData) getActivity().getApplicationContext();
@@ -171,6 +173,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 profileOnClick(v);
+            }
+        });
+        out.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                getActivity().finish();
             }
         });
         if(myprofile != null){
