@@ -75,11 +75,11 @@ public class Profile implements Serializable {
     @Exclude
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
-        result.put("uid", uid);
-        result.put("username", username);
-        result.put("password", password);
-        result.put("department", department);
-        result.put("degree", degree);
+        result.put("UserID", uid);
+        result.put("UserName", username);
+        result.put("Password", password);
+        result.put("Department", department);
+        result.put("UserDegree", degree);
         return result;
     }
 
