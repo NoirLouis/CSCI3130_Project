@@ -197,11 +197,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
 
-            name.setText(ds.child(userID).getValue(Profile.class).getUid()); //set the ID
-            info1.setText(ds.child(userID).getValue(Profile.class).getUsername()); //set the username
-            pass1.setText(ds.child(userID).getValue(Profile.class).getPassword()); //set the password
-            state1.setText(ds.child(userID).getValue(Profile.class).getDepartment()); //set the department
-            state2.setText(ds.child(userID).getValue(Profile.class).getDegree()); //set the degree
+            name.setText(ds.child(UserID).getValue(Profile.class).getUid()); //set the ID
+            info1.setText(ds.child(UserID).getValue(Profile.class).getUsername()); //set the username
+            pass1.setText(ds.child(UserID).getValue(Profile.class).getPassword()); //set the password
+            state1.setText(ds.child(UserID).getValue(Profile.class).getDepartment()); //set the department
+            state2.setText(ds.child(UserID).getValue(Profile.class).getDegree()); //set the degree
             //display all the information
             Log.d(TAG, "showData: UserID: " + name);
             Log.d(TAG, "showData: Username: " + info1);
