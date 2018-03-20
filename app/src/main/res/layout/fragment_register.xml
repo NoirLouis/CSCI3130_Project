@@ -25,12 +25,11 @@
             android:layout_height="wrap_content"
             android:background="#3d455b">
 
+            <TableLayout
+                android:id="@+id/registerCourseInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TableLayout>
         </ScrollView>
     </RelativeLayout>
-
-    <TableLayout
-        android:id="@+id/registerCourseInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></TableLayout>
 
 </FrameLayout>
