@@ -21,4 +21,8 @@
     <string name="action_login">Login</string>
     <string name="error_invalid_login">Incorrect username or password. Please try again. </string>
     <string name="error_field_required">This field is required</string>
+    <string name="regname">Name</string>
+    <string name="regid">ID</string>
+    <string name="regtime">Time</string>
+    <string name="regspot">Spot</string>
 </resources>

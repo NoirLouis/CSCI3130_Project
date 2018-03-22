@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RegisterFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link RegisterFragment newInstance} factory method to
  * create an instance of this fragment.
@@ -48,17 +48,20 @@ public class RegisterFragment extends Fragment {
     private String courseInfo;
     private String courseSpot;
     private String location;
-    private int spotMax;
-    private int spotCurrent;
-    private static final String TAG = "test";
-    //Not needed in the registration
     private String courseWeekday;
     private String courseTime;
     private String courseType;
-    private ListView RegistrationListView;
-    private FirebaseListAdapter<Courses> firebaseAdapter;
+    private int spotMax;
+    private int spotCurrent;
 
-    private ArrayList<Course> CourseList;
+    private static final String TAG = "test";
+    //Not needed in the registration
+
+    private ListView RegistrationListView;
+    private Button RegButton;
+    private ArrayList<Courses> CourseList;
+
+    private FirebaseListAdapter<Courses> firebaseAdapter;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -73,7 +76,36 @@ public class RegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         //course items that should be shown in the schedule
-        ArrayList<Course> courseArrayList = new ArrayList<Course>();
+        CourseList = getData.courses_list;
+
+        RegButton= (Button) view.findViewById(R.id.RegisterButt);
+        //for(int i=0; i<CourseList.size();i++) {
+            RegistrationListView = (ListView) view.findViewById(R.id.listView_Registration);
+            //RegistrationAdapter adapter = new RegistrationAdapter(getContext(), R.layout.fragment_schedule, CourseList);
+            //RegistrationListView.setAdapter(adapter);
+       // }
+        /*RegButton.setOnClickListener(new OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                StringBuilder result = new StringBuilder();
+                for(int i=0;i<adapter.mCheckStates.size();i++)
+                {
+                    if(adapter.mCheckStates.get(i)==true)
+                    {
+
+                        result.append(app_info[i].applicationName);
+                        result.append("\n");
+                    }
+
+                }
+                Toast.makeText(MainActivity.this, result, 1000).show();
+            }
+
+        });*/
 
         //Retrieve schedual information for current user
         String userId = LocalData.getUserID(); //Get userID from local
@@ -86,7 +118,10 @@ public class RegisterFragment extends Fragment {
 
         //Get the reference to the UI contents
         Activity act = getActivity();
+        Log.i(TAG, "MyClass.getView()  " + getData.courses_list.toString()+" second");
 
+
+        /*
         RegistrationListView = (ListView) view.findViewById(R.id.listView_Registration);
 
         //Set up the List View
@@ -113,9 +148,10 @@ public class RegisterFragment extends Fragment {
 
             }
         };
+        */
 /*
         RegistrationListView.setAdapter(firebaseAdapter);
-*/
+
         /*
         RegistrationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             // onItemClick method is called everytime a user clicks an item on the list
@@ -151,13 +187,13 @@ public class RegisterFragment extends Fragment {
 */
         //create a new CourseListAdapter object(CourseListAdapter.java)
         //turns the content of courseArrayList into things that the ListView(fragment_schedule) can display
-       // RegistrationAdapter adapter = new RegistrationAdapter(getContext(), R.layout.fragment_register, CourseList);
+        // RegistrationAdapter adapter = new RegistrationAdapter(getContext(), R.layout.fragment_register, CourseList);
 
         //look within the ListView(fragment_schedule) layout for the element with id.lv_schedule
         //ListView listView = (ListView) view.findViewById(R.id.listView_Registration);
 
         //use ListView(fragment_schedule) adapter to draw the things on the screen
-      //  listView.setAdapter(adapter);
+        //  listView.setAdapter(adapter);
 
 
 
