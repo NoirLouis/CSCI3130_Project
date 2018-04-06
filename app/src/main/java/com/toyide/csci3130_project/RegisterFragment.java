@@ -4,6 +4,7 @@ import android.content.Context;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 
 import android.support.v4.widget.TextViewCompat;
@@ -32,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Iterator;
@@ -52,6 +54,7 @@ public class RegisterFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private MyApplicationData appState;
+    private MyApplicationData appCourseData;
     private String[] cidList;
     private String courseTitle;
     private String courseInfo;
@@ -74,6 +77,10 @@ public class RegisterFragment extends Fragment {
 
     public String currentIDList;// selected courseIDList for later conflict check
     private CheckTimeConflict checkTimeConflict;
+    private String userId ;
+    private String intialSelectedCourseStr;//intial selected course list
+    private final ArrayList<Courses> intialSelectedSpotArray = new ArrayList<Courses>();
+
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -96,7 +103,7 @@ public class RegisterFragment extends Fragment {
         RegistrationListView.setAdapter(adapter);
 
         //Retrieve schedual information for current user
-        String userId = LocalData.getUserID(); //Get userID from local
+        userId = LocalData.getUserID(); //Get userID from local
 
 
         //Get the reference to the UI contents
@@ -107,17 +114,56 @@ public class RegisterFragment extends Fragment {
         appState = (MyApplicationData) getActivity().getApplicationContext();
         appState.firebaseDBInstance = FirebaseDatabase.getInstance();
         appState.firebaseReference = appState.firebaseDBInstance.getReference("Registrations");
-        //Set-up Firebase
+        //Get intial selected course list
+        appState.firebaseReference.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot userSnapshot) {
+                intialSelectedCourseStr = userSnapshot.child(userId).child("CourseID").getValue().toString();
+                //String intialSelectedCourse = appState.firebaseReference.child(LocalData.getUserID()).child("CourseID").;
+                //Profile profile = userSnapshot.child(userID).getValue(Profile.class);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //Current spot of courses in the list -1
+        ArrayList<String> intialSelectedCourseList = new ArrayList<String> (Arrays.asList(intialSelectedCourseStr.split(",")));
+
+        //FIXME: get intial course list from firebase
+        //Get intial selected course list
+        appCourseData.firebaseDBInstance = FirebaseDatabase.getInstance();
+        appCourseData.firebaseReference = appCourseData.firebaseDBInstance.getReference("Courses");
+        appCourseData.firebaseReference.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> courseSnapshot =dataSnapshot.getChildren();
+
+                for (DataSnapshot course : courseSnapshot ){
+                    Courses temp = course.getValue(Courses.class);
+                    intialSelectedSpotArray.add(temp);
+                    getData.courses_list.add(temp);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         RegButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String IDlist = adapter.CourseIDString.toString().replace("[", "").replace("]", "").replace(" ","");
-                //FIXME: remove update to REGISTER
                 //appState.firebaseReference.child(LocalData.getUserID()).child("CourseID").setValue(IDlist);
 
                 //confirm information on screen
-
 
                 currentIDList = IDlist;
 
@@ -140,8 +186,6 @@ public class RegisterFragment extends Fragment {
                             //Check if current courseTime and weekday confict with the existing one
                             int length =selectedCourseTimeList.size();
                             for (int k = 0; k < length; k++) {
-                                //TODO:method check if two time conflict
-                                //FIXME:problem with exception in method developed
                                 //Conflictcheck(selectedCourseTimeList[k],currentCourseTime
 
                                 Log.i(TAG,  "  alalal  "+checkTimeConflict.confliCtcheck(selectedCourseTimeList.get(k), currentCourseTime) + "   "+ checkTimeConflict.sameChars(selectedCourseDayList.get(k), currentCourseDay));
@@ -165,34 +209,30 @@ public class RegisterFragment extends Fragment {
                 if (checkConflict == false) {
                     appState.firebaseReference.child(LocalData.getUserID()).child("CourseID").setValue(currentIDList);
                     Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
+
+                    //FIXME: Update current spot
+                    /*
+                    //Current spot of courses in currentIDList  +1
+                    for (int i = 0; i < appCourseData; i++) {
+                        appCourseData.firebaseReference.child(intialSelectedCourseList.get(i)).child("SpotCurrent").setValue()
+                    }
+                    for(int i = 0; i < intialSelectedCourseList.size(); i++) {
+                        appCourseData.firebaseReference.child()
+                    }
+                       */
+
+
+                    //Get the registed course list using userId
                 }
                 else {
                     Toast.makeText(getActivity(), "Conflicted.", Toast.LENGTH_SHORT).show();
-                    /*
-                    final PopupWindow popUpWindow =new PopupWindow(getActivity());
-                    LinearLayout mainLayout = new LinearLayout(getActivity());
-                    LinearLayout containerLayout =new LinearLayout(getActivity());
-                    Button btnClick =new Button(getActivity());
-                    btnClick.setText("RETURN");
-                    btnClick.setOnClickListener(new View.OnClickListener() {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
                         @Override
-                        public void onClick(View v) {
-                            popUpWindow.dismiss();
+                        public void run() {
+                            Log.i(TAG, "MyClass.getView()  " +" secod");
                         }
-                    });
-                    popUpWindow.showAtLocation(  getActivity() , Gravity.BOTTOM, 10, 10);
-                    popUpWindow.update(50,50,320,90);
-                    TextView tvMsg = new TextView(getActivity());
-                    tvMsg.setText("Courses conflicted");
-
-                    ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT);
-                    containerLayout.setOrientation(LinearLayout.VERTICAL);
-                    containerLayout.addView(tvMsg, layoutParams);
-                    popUpWindow.setContentView(containerLayout);
-                    containerLayout.addView(btnClick, layoutParams);
-*/
-                    //TODO disable register && conflict messages
+                    }, 400);
                     //TODO update currentSpot
 
                 }
