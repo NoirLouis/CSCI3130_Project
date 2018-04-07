@@ -3,18 +3,26 @@ import android.app.Activity;
 import android.content.Context;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 
+import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 //import android.widget.TableLayout;
+import android.widget.PopupWindow;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +33,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -41,7 +55,12 @@ public class RegisterFragment extends Fragment {
 
 
     private OnFragmentInteractionListener mListener;
+    String myLog = "myLog";
 
+    AlphaAnimation inAnimation;
+    AlphaAnimation outAnimation;
+
+    FrameLayout progressBarHolder;
     private MyApplicationData appState;
     private String[] cidList;
     private String courseTitle;
@@ -63,161 +82,124 @@ public class RegisterFragment extends Fragment {
 
     private FirebaseListAdapter<Course> firebaseAdapter;
 
-
-
-
-
+    public String currentIDList;// selected courseIDList for later conflict check
+    private CheckTimeConflict checkTimeConflict;
 
     public RegisterFragment() {
         // Required empty public constructor
     }
 
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final Profile myprofile = (Profile) getActivity().getIntent().getSerializableExtra("profile") ;
+
+        //Set-up Firebase
+        appState = (MyApplicationData) getActivity().getApplicationContext();
+        appState.firebaseDBInstance = FirebaseDatabase.getInstance();
+        appState.firebaseReference = appState.firebaseDBInstance.getReference("Registrations").child(myprofile.UserID).child("CourseID");
+        appState.firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentIDList = dataSnapshot.getValue(String.class);
+                final RegistrationAdapter adapter = new RegistrationAdapter(getContext(), R.layout.fragment_register, CourseList, currentIDList);
+                RegistrationListView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
         // create a view instance to add the courseInfo
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         //course items that should be shown in the schedule
         CourseList = getData.courses_list;
-        Log.i(TAG, "MyClass.getView()  " + CourseList.toString()+" secod");
-
+        checkTimeConflict = new CheckTimeConflict();
         RegistrationListView= (ListView) view.findViewById(R.id.listView_Registration);
         RegButton= (Button) view.findViewById(R.id.RegisterButt);
+        progressBarHolder = (FrameLayout) getActivity().findViewById(R.id.progressBarHolder);
 
-        RegistrationAdapter adapter = new RegistrationAdapter(getContext(), R.layout.fragment_register, CourseList);
-        RegistrationListView.setAdapter(adapter);
-        /*RegButton.setOnClickListener(new OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-
-                StringBuilder result = new StringBuilder();
-                for(int i=0;i<adapter.mCheckStates.size();i++)
-                {
-                    if(adapter.mCheckStates.get(i)==true)
-                    {
-
-                        result.append(app_info[i].applicationName);
-                        result.append("\n");
-                    }
-
-                }
-                Toast.makeText(MainActivity.this, result, 1000).show();
-            }
-
-        });*/
 
         //Retrieve schedual information for current user
         String userId = LocalData.getUserID(); //Get userID from local
 
-        //Set-up Firebase
-        appState = (MyApplicationData) getActivity().getApplicationContext();
-        appState.firebaseDBInstance = FirebaseDatabase.getInstance();
-        appState.firebaseReference = appState.firebaseDBInstance.getReference("Courses");
-        //Set-up Firebase
-
-        //Get the reference to the UI contents
-        Activity act = getActivity();
-        Log.i(TAG, "MyClass.getView()  " + getData.courses_list.toString()+" second");
-
-
-        /*
-        RegistrationListView = (ListView) view.findViewById(R.id.listView_Registration);
-
-        //Set up the List View
-        firebaseAdapter = new FirebaseListAdapter<Courses>(getActivity(), Courses.class,
-                android.R.layout.simple_list_item_1, appState.firebaseReference) {
-
-            @Override
-            protected void populateView ( View v , Courses model, int position) {
-                Log.i(TAG, "MyClass.getView()  " + model.toString()+" secod");
-                TextView register = (TextView) v.findViewById(android.R.id.text1);
-                TextView courseTitleView = (TextView) v.findViewById(R.id.courseName);
-                TextView courseInfoView = (TextView) v.findViewById(R.id.courseInfo);
-                TextView courseTime = (TextView) v.findViewById(R.id.courseTime);
-                TextView courseSpot = (TextView) v.findViewById(R.id.courseSpot);
-                CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
-                Map<String, Object> course = model.toMap();
-                //set text for TextView
-                if(course !=null){
-                    courseTitleView.setText(course.get("CourseTitle").toString());
-                    courseInfoView.setText(course.get("CourseInfo").toString());
-                    courseTime.setText(course.get("CourseWeekday").toString() + course.get("CourseTime").toString());
-                    courseSpot.setText(course.get("SpotCurrent").toString() + "/" + course.get("SpotMax").toString() );
-                }
-
-            }
-        };
-        */
-/*
-        RegistrationListView.setAdapter(firebaseAdapter);
-
-        /*
-        RegistrationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            // onItemClick method is called everytime a user clicks an item on the list
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Course course = (Course) firebaseAdapter.getItem(position);
-
-            }
-        });*/
-        /*
-        appState.firebaseReference.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    Course course = dataSnapshot.getValue(Course.class);
-                    courseTitle = course.getCourseTitle().toString();
-                    courseInfo = course.getCourseInfo().toString();
-                    courseTime = course.getCourseTime().toString();
-                    spotMax = course.getSpotMax();
-                    spotCurrent = course.getSpotCurrent();
-                    location = course.getLocation().toString();
-                    courseWeekday = course.getCourseWeekday().toString();
-                    courseType = course.getCourseType().toString();
-                }
-                Course C = new Course(courseTitle,courseType, courseWeekday, courseTime, courseInfo, location, spotCurrent, spotMax);
-                CourseList.add(C);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-*/
-        //create a new CourseListAdapter object(CourseListAdapter.java)
-        //turns the content of courseArrayList into things that the ListView(fragment_schedule) can display
-       // RegistrationAdapter adapter = new RegistrationAdapter(getContext(), R.layout.fragment_register, CourseList);
-
-        //look within the ListView(fragment_schedule) layout for the element with id.lv_schedule
-        //ListView listView = (ListView) view.findViewById(R.id.listView_Registration);
-
-        //use ListView(fragment_schedule) adapter to draw the things on the screen
-      //  listView.setAdapter(adapter);
 
 
 
-/*
-        TableLayout courseInfoView = view.findViewById(R.id.registerCourseInfo);
-        RegisterCourseInfo myRegisteration = new RegisterCourseInfo(getActivity(),this,view);
-        myRegisteration.init();
-*/
-/*
-        Button RegButt = (Button) view.findViewById(R.id.RegisterButt);
-        RegButt.setOnClickListener(new View.OnClickListener() {
+        RegButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Register Confirmed", Toast.LENGTH_SHORT).show();
+
+                boolean checkConflict = false;//false -> no conflict
+                ArrayList<String> selectedCourseTimeList = new ArrayList<String>();
+                ArrayList<String> selectedCourseDayList = new ArrayList<String>();
+
+                //Check conflict: CourseList a list of courses
+                for (int i = 0; i < currentIDList.toString().split(",").length; i++) {
+                    outerloop:
+                    for (int j = 0; j < CourseList.size(); j++) {
+                        Courses temp_course = CourseList.get(j);
+                        //Courss matches get courseTime
+                        if (temp_course.CourseID.toString().equals(currentIDList.toString().split(",")[i]) ) {
+
+                            String currentCourseTime = temp_course.CourseTime;
+                            String currentCourseDay = temp_course.CourseWeekday;
+                            //Check if current courseTime and weekday confict with the existing one
+                            int length =selectedCourseTimeList.size();
+                            for (int k = 0; k < length; k++) {
+                                //TODO:method check if two time conflict
+                                //FIXME:problem with exception in method developed
+                                //Conflictcheck(selectedCourseTimeList[k],currentCourseTime
+
+                                if (checkTimeConflict.confliCtcheck(selectedCourseTimeList.get(k), currentCourseTime) && checkTimeConflict.sameChars(selectedCourseDayList.get(k), currentCourseDay)) {
+                                    checkConflict = true; //there is conflict
+                                    break outerloop;
+                                }
+                                selectedCourseTimeList.add(currentCourseTime) ;
+                                selectedCourseDayList.add(currentCourseDay);
+                                //No conflict add to courseLis
+                            }
+
+                            if (i==0) {
+                                selectedCourseTimeList.add(currentCourseTime) ;
+                                selectedCourseDayList.add(currentCourseDay);
+                            }
+                        }
+                    }
+                }
+                if (checkConflict == false) {
+                    appState.firebaseReference.child(LocalData.getUserID()).child("CourseID").setValue(currentIDList);
+                    new MyTask().execute();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 2200);
+                }
+                else {
+                    new MyTask().execute();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "Conflict!", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 2200);
+
+                    //TODO disable register && conflict messages
+                    //TODO update currentSpot
+
+                }
+
             }
+
         });
 
-        // Inflate the layout for this fragment
-        */
         return view;
     }
 
@@ -225,19 +207,42 @@ public class RegisterFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
+            /*
+            ArrayList<Courses> curCourses = new ArrayList<Courses>();
+            for (String s : adapter.CourseIDString) {
+                for (Courses c : CourseList) {
+                    if (s.equals(c.CourseID))
+                        curCourses.add(c);
+                }
+            }
+
+            for (int i = 0; i < curCourses.size(); i++) {
+                for (int j = i + 1; j < curCourses.size(); j++) {
+                    for (char day : curCourses.get(i).CourseWeekday.toCharArray()) {
+                        if (curCourses.get(j).CourseWeekday.indexOf(day) != -1) {
+                            String time1[] = curCourses.get(i).CourseTime.split("-");
+                            String time2[] = curCourses.get(j).CourseTime.split("-");
+
+                        }
+                    }
+
+                }
+            }
+            */
+
+
             mListener.onFragmentInteraction(uri);
         }
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            Toast.makeText(context, "RegisterFragment attached", Toast.LENGTH_SHORT).show();
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+            if (context instanceof OnFragmentInteractionListener) {
+                mListener = (OnFragmentInteractionListener) context;
+            } else {
+                Toast.makeText(context, "RegisterFragment attached", Toast.LENGTH_SHORT).show();
+            }
         }
-    }
 
     @Override
     public void onDetach() {
@@ -245,18 +250,43 @@ public class RegisterFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private class MyTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            RegButton.setEnabled(false);
+            inAnimation = new AlphaAnimation(0f, 1f);
+            inAnimation.setDuration(200);
+            progressBarHolder.setAnimation(inAnimation);
+            progressBarHolder.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            outAnimation = new AlphaAnimation(1f, 0f);
+            outAnimation.setDuration(200);
+            progressBarHolder.setAnimation(outAnimation);
+            progressBarHolder.setVisibility(View.GONE);
+            RegButton.setEnabled(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                for (int i = 0; i < 2; i++) {
+                    Log.d(myLog, "Loading.. " );
+                    TimeUnit.SECONDS.sleep(1);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

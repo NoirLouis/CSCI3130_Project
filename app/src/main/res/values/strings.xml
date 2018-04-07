@@ -22,4 +22,5 @@
     <string name="error_invalid_login">Incorrect username or password. Please try again. </string>
     <string name="error_field_required">This field is required</string>
     <string name="register">Register</string>
+    <string name="title_activity_stop2">Stop2Activity</string>
 </resources>
