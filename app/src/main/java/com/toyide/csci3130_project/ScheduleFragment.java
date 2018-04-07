@@ -39,7 +39,7 @@ public class ScheduleFragment extends Fragment {
 
     private MyApplicationData appState;
     private ArrayList<String> cidList;
-    private ArrayList<Courses> CourseList;
+    private ArrayList<Course> CourseList;
     private String cid;
 
     public ScheduleFragment() {
@@ -53,7 +53,7 @@ public class ScheduleFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         //course items that should be shown in the schedule
-        CourseList = new ArrayList<Courses>();
+        CourseList = new ArrayList<Course>();
         cidList = new ArrayList<String>();
 
         //Retrieve schedual information for current user
@@ -108,7 +108,7 @@ public class ScheduleFragment extends Fragment {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             String courseTitle = "courseTitle", courseType = "courseType", courseWeekday = "courseWeekday", courseTime = "courseTime", courseInfo = "courseInfo", Location="TAD";
                             if (dataSnapshot != null) {
-                                Courses course = dataSnapshot.child(courseID).getValue(Courses.class);
+                                Course course = dataSnapshot.child(courseID).getValue(Course.class);
                                 courseTitle = course.CourseTitle;
                                 courseType = course.CourseType;
                                 courseWeekday = course.CourseWeekday;
@@ -116,7 +116,7 @@ public class ScheduleFragment extends Fragment {
                                 courseInfo = course.CourseInfo;
                                 Location = course.Location;
                             }
-                            Courses C = new Courses(
+                            Course C = new Course(
                                     courseTitle,
                                     courseType,
                                     courseWeekday,

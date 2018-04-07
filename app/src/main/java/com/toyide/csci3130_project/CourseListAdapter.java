@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CourseListAdapter extends ArrayAdapter<Courses> {
+public class CourseListAdapter extends ArrayAdapter<Course> {
 
     //constructor
-    public CourseListAdapter(Context context, int resource, ArrayList<Courses> objects) {
+    public CourseListAdapter(Context context, int resource, ArrayList<Course> objects) {
         super(context, resource, objects);
     }
 
@@ -26,7 +26,7 @@ public class CourseListAdapter extends ArrayAdapter<Courses> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         //get data for the position
-        Courses course = getItem(position);
+        Course course = getItem(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.course_cotent, parent,false);
         }

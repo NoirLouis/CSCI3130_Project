@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "test";
     private MyApplicationData appData;
-    private final ArrayList<Courses> courseChildren = new ArrayList<Courses>();
+    private final ArrayList<Course> courseChildren = new ArrayList<Course>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                                         Iterable<DataSnapshot> courseSnapshot =dataSnapshot.getChildren();
 
                                         for (DataSnapshot course : courseSnapshot ){
-                                            Courses temp = course.getValue(Courses.class);
+                                            Course temp = course.getValue(Course.class);
                                             courseChildren.add(temp);
                                             getData.courses_list.add(temp);
                                         }
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void showUser(Profile profile, ArrayList<Courses> course){
+    private void showUser(Profile profile, ArrayList<Course> course){
 
             Intent intent = new Intent(this, NavActivity.class);
             intent.putExtra("profile", profile);

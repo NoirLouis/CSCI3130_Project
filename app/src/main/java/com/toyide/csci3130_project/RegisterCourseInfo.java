@@ -1,20 +1,20 @@
-package com.toyide.csci3130_project;
+//package com.toyide.csci3130_project;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.EditText;
-import android.content.Intent;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+//import android.app.Activity;
+//import android.app.Fragment;
+//import android.content.Context;
+//import android.graphics.Color;
+//import android.util.Log;
+//import android.view.Gravity;
+//import android.view.View;
+//import android.widget.CheckBox;
+//import android.widget.TableLayout;
+//import android.widget.TableRow;
+//import android.widget.TextView;
+//import android.widget.EditText;
+//import android.content.Intent;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by JingyunYang on 2018/2/21.

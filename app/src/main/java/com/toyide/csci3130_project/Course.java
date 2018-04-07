@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by JingyunYang, YideGe on 18/3/17.
  */
 
-public class Courses {
+public class Course {
     public  Long CourseID;
     public String CourseTitle;     //Eg. CSCI3130
     public String CourseType;      //Eg. lecture, lab or tutorial
@@ -20,12 +20,12 @@ public class Courses {
     public int SpotCurrent;        //number of current enrolled in the course
     public int SpotMax;            //maximum number of students enrolled
 
-    public  Courses (){
+    public  Course (){
 
     }
 
     //constructor for registration
-    public Courses (String courseTitle, String courseType, String courseWeekday, String courseTime, String courseInfo, String location) {
+    public Course (String courseTitle, String courseType, String courseWeekday, String courseTime, String courseInfo, String location) {
         this.CourseTitle = courseTitle;
         this.CourseType = courseType;
         this.CourseWeekday = courseWeekday;
@@ -35,7 +35,7 @@ public class Courses {
     }
 
     //constructor for registration
-    public Courses (Long CourseID, String courseTitle, String courseType, String courseWeekday, String courseTime, String courseInfo, String location, int spotCurrent, int spotMax) {
+    public Course (Long CourseID, String courseTitle, String courseType, String courseWeekday, String courseTime, String courseInfo, String location, int spotCurrent, int spotMax) {
         this.CourseTitle = courseTitle;
         this.CourseType = courseType;
         this.CourseWeekday = courseWeekday;

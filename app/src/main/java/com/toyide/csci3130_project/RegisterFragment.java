@@ -59,9 +59,9 @@ public class RegisterFragment extends Fragment {
 
     private ListView RegistrationListView;
     private Button RegButton;
-    private ArrayList<Courses> CourseList;
+    private ArrayList<Course> CourseList;
 
-    private FirebaseListAdapter<Courses> firebaseAdapter;
+    private FirebaseListAdapter<Course> firebaseAdapter;
 
 
 

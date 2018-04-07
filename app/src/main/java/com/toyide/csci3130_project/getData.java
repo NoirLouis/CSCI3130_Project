@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 
 public class getData {
-    public static ArrayList<Courses> courses_list = new ArrayList<Courses>();
-    public static void setCourses_list(Courses newone){
+    public static ArrayList<Course> courses_list = new ArrayList<Course>();
+    public static void setCourses_list(Course newone){
         courses_list.add(newone);
     }
 
