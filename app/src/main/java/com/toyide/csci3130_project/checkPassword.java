@@ -10,8 +10,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class checkPassword {
     private String users,  password;
 
-
-
     public boolean check(String name, String pass ){
 
         if (name.equals(users)){

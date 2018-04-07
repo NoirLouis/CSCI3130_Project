@@ -141,7 +141,7 @@ public class RegisterFragment extends Fragment {
                 for (int i = 0; i < currentIDList.toString().split(",").length; i++) {
                     outerloop:
                     for (int j = 0; j < CourseList.size(); j++) {
-                        Courses temp_course = CourseList.get(j);
+                        Course temp_course = CourseList.get(j);
                         //Courss matches get courseTime
                         if (temp_course.CourseID.toString().equals(currentIDList.toString().split(",")[i]) ) {
 

@@ -6,11 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-
-
 // Check time conflict of two time intervals
 public class CheckTimeConflict {
-
 
     //@Input: string XXXX-XXXX
     //@Return: true there is conflict
@@ -38,6 +35,5 @@ public class CheckTimeConflict {
             }
         }
         return false;
-
     }
 }

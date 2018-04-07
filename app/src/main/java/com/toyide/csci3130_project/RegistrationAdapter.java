@@ -16,14 +16,14 @@ import java.util.ArrayList;
  * Created by JingyunYang on 2018/3/17.
  */
 
-public class RegistrationAdapter extends ArrayAdapter<Courses> {
+public class RegistrationAdapter extends ArrayAdapter<Course> {
     private MyApplicationData appState;
     public ArrayList<String> CourseIDString= new ArrayList<String>();
     private static final String TAG ="test" ;
     boolean[] checkedStates;
 
     //constructor
-    public RegistrationAdapter(Context context, int resource, ArrayList<Courses> objects, String currentCourses) {
+    public RegistrationAdapter(Context context, int resource, ArrayList<Course> objects, String currentCourses) {
         super(context, resource, objects);
         checkedStates = new boolean[objects.size()]; //********** NEW ********
         for (String cid : currentCourses.split(",")) {
@@ -36,7 +36,7 @@ public class RegistrationAdapter extends ArrayAdapter<Courses> {
 
 
         //get data for the position
-        Courses course = getItem(position);
+        Course course = getItem(position);
         final String ID=course.CourseID.toString();
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.registration_content, parent, false);

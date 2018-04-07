@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 public class NavActivity extends AppCompatActivity {
 
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
