@@ -36,7 +36,7 @@ import static android.content.Intent.getIntent;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-
+//Refactoring- remove useless variables
 public class ProfileFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,18 +53,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     Button info;
     Button pass;
     Button modify;
-    Button back;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     Profile myprofile;
-    private MyApplicationData appState;
 
-    private String userID;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -90,19 +84,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-        }
-    }
-    */
 
 
 
@@ -112,8 +93,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container,false);
-
-        userID = LocalData.getUserID();
         myprofile = (Profile) getActivity().getIntent().getSerializableExtra("profile") ;
 
         name = view.findViewById(R.id.viewAntoNieva);

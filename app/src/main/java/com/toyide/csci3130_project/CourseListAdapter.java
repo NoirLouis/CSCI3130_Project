@@ -14,9 +14,6 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by SHAN on 18/2/21.
- */
 
 public class CourseListAdapter extends ArrayAdapter<Courses> {
 

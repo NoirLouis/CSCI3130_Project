@@ -1,22 +1,18 @@
 package com.toyide.csci3130_project;
 
-import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by JingyunYang on 2018/3/16.
- */
+
 /**
  * Registration Class that defines how we access the user ID and the corresponding course ID they slected
  * project Firebase databse. This is converted to a JSON format
  */
+//remove useless variables and functions
 public class Registration implements Serializable {     //registeration ID,
     public String UserID;                          //user ID
     public String CourseID;                   //a list containing coruse reference IDs

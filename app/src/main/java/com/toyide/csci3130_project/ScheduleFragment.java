@@ -158,7 +158,7 @@ public class ScheduleFragment extends Fragment {
                             //use ListView(fragment_schedule) adapter to draw the things on the screen
                             listView.setAdapter(adapter);
                         }
-                    }, 300);
+                    }, 400);
 
                 }
 
