@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class getData {
     public static ArrayList<Courses> courses_list = new ArrayList<Courses>();
-    public static String currentList = "";
     public static void setCourses_list(Courses newone){
         courses_list.add(newone);
     }

@@ -76,18 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
                                     }
                                 });
-                                appState.firebaseReference = appState.firebaseDBInstance.getReference("Registrations").child(userID).child("CourseID");
-                                appState.firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        getData.currentList = dataSnapshot.getValue(String.class);
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                    }
-                                });
                                 showUser(profile, courseChildren);
                             }else {
 
