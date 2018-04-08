@@ -132,10 +132,12 @@ public class RegisterFragment extends Fragment {
         RegButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                boolean checktl = true;
                 boolean checkConflict = false;//false -> no conflict
                 ArrayList<String> selectedCourseTimeList = new ArrayList<String>();
                 ArrayList<String> selectedCourseDayList = new ArrayList<String>();
+                ArrayList<String> labneeded = new ArrayList<String>();
+                ArrayList<String> tuneeded = new ArrayList<String>();
 
                 //Check conflict: CourseList a list of courses
                 for (int i = 0; i < currentIDList.toString().split(",").length; i++) {
@@ -145,8 +147,36 @@ public class RegisterFragment extends Fragment {
                         //Courss matches get courseTime
                         if (temp_course.CourseID.toString().equals(currentIDList.toString().split(",")[i]) ) {
 
+                            Long currentCourseID = temp_course.CourseID;
+                            String currentCourseLabID = temp_course.LabID;
+                            String currentCourseTuID = temp_course.TutID;
+                            String currentCourseType = temp_course.CourseType;
                             String currentCourseTime = temp_course.CourseTime;
                             String currentCourseDay = temp_course.CourseWeekday;
+                            if(currentCourseType.equals("Lec")) {
+                                if (!currentCourseLabID.equals("00000")){
+                                    labneeded.add(currentCourseLabID);
+                                }
+                                if (!currentCourseTuID.equals("00000")){
+                                    tuneeded.add(currentCourseTuID);
+                                }
+                            }
+                            if(currentCourseType.equals("Lab")){
+                                if (labneeded.contains(currentCourseID.toString())){
+                                    labneeded.remove(currentCourseID.toString());
+                                }
+                                else{
+                                    checktl = false;
+                                }
+                            }
+                            if(currentCourseType.equals("Tut")){
+                                if (tuneeded.contains(currentCourseID.toString())){
+                                    tuneeded.remove(currentCourseID.toString());
+                                }
+                                else{
+                                    checktl = false;
+                                }
+                            }
                             //Check if current courseTime and weekday confict with the existing one
                             int length =selectedCourseTimeList.size();
                             for (int k = 0; k < length; k++) {
@@ -169,6 +199,16 @@ public class RegisterFragment extends Fragment {
                             }
                         }
                     }
+                }
+                if (checktl = false || !labneeded.isEmpty() || !tuneeded.isEmpty()){
+                    new MyTask().execute();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "Relative tutorial or lab not be chosen!", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 2200);
                 }
                 if (checkConflict == false) {
                     appState.firebaseReference.child(LocalData.getUserID()).child("CourseID").setValue(currentIDList);
