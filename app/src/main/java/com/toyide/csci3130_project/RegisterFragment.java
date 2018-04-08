@@ -53,7 +53,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class RegisterFragment extends Fragment {
 
-
     private OnFragmentInteractionListener mListener;
     String myLog = "myLog";
 
@@ -122,17 +121,15 @@ public class RegisterFragment extends Fragment {
         RegButton= (Button) view.findViewById(R.id.RegisterButt);
         progressBarHolder = (FrameLayout) getActivity().findViewById(R.id.progressBarHolder);
 
-
         //Retrieve schedual information for current user
         String userId = LocalData.getUserID(); //Get userID from local
-
-
-
 
         RegButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                boolean check_out_of_limit = false;
+                int CountLec = 0;
+                boolean check_tut_lab = false;
                 boolean checkConflict = false;//false -> no conflict
                 ArrayList<String> selectedCourseTimeList = new ArrayList<String>();
                 ArrayList<String> selectedCourseDayList = new ArrayList<String>();
@@ -144,6 +141,10 @@ public class RegisterFragment extends Fragment {
                         Course temp_course = CourseList.get(j);
                         //Courss matches get courseTime
                         if (temp_course.CourseID.toString().equals(currentIDList.toString().split(",")[i]) ) {
+
+                            if(temp_course.CourseType.equals("Lec")){
+                                CountLec++;
+                            }
 
                             String currentCourseTime = temp_course.CourseTime;
                             String currentCourseDay = temp_course.CourseWeekday;
@@ -167,8 +168,25 @@ public class RegisterFragment extends Fragment {
                                 selectedCourseTimeList.add(currentCourseTime) ;
                                 selectedCourseDayList.add(currentCourseDay);
                             }
+                            if (CountLec > 5){
+                                check_out_of_limit = true;
+                                break outerloop;
+                            }
+
                         }
                     }
+
+                }
+                //the number of registered course is greater than 5
+                if (check_out_of_limit == true){
+                    new MyTask().execute();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "Out of limitation!", Toast.LENGTH_SHORT).show();
+                        }
+                    }, 2200);
                 }
                 if (checkConflict == false) {
                     appState.firebaseReference.child(LocalData.getUserID()).child("CourseID").setValue(currentIDList);
